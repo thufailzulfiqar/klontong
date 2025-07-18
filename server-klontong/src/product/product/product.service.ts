@@ -39,4 +39,23 @@ export class ProductService {
       lastPage: Math.ceil(total / limit),
     };
   }
+
+  async getByCategory(categoryId: number) {
+    return this.prisma.product.findMany({
+      where: { CategoryId: categoryId },
+      orderBy: { id: 'asc' },
+    });
+  }
+
+  async search(query: string) {
+    return this.prisma.product.findMany({
+      where: {
+        name: {
+          contains: query,
+          mode: 'insensitive'
+        }
+      },
+      orderBy: { id: 'asc' }
+    });
+  }
 }

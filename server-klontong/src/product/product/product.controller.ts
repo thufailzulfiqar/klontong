@@ -78,6 +78,37 @@ export class ProductController {
     res.status(HttpStatus.OK).json(result);
   }
   
+  @Get('/category/:categoryId')
+  async getByCategory(
+    @Param('categoryId') categoryId: string,
+    @Res() res: Response
+  ) {
+    const catId = Number(categoryId);
+    if (isNaN(catId)) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ message: 'Invalid category id' });
+    }
+    const products = await this.productService.getByCategory(catId);
+    if (!products || products.length === 0) {
+      return res.status(HttpStatus.NOT_FOUND).json({ message: 'Category not found' });
+    }
+    res.status(HttpStatus.OK).json(products);
+  }
+
+  @Get('/search')
+  async searchProduct(
+    @Query('q') query: string,
+    @Res() res: Response
+  ) {
+    if (!query || query.trim() === '') {
+      return res.status(HttpStatus.BAD_REQUEST).json({ message: 'Query is required' });
+    }
+    const products = await this.productService.search(query);
+    if (!products || products.length === 0) {
+      return res.status(HttpStatus.NOT_FOUND).json({ message: 'No products found' });
+    }
+    res.status(HttpStatus.OK).json(products);
+  }
+
   @Get('/:id')
   async getById(@Param('id') id: string, @Res() res: Response) {
     const product = await this.productService.getById(Number(id));
@@ -88,5 +119,4 @@ export class ProductController {
     }
     return res.status(HttpStatus.OK).json(product);
   }
-
 }
