@@ -1,15 +1,24 @@
-import { Controller, Post, Body, Res, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Body, Res, HttpStatus, UsePipes, ValidationPipe } from '@nestjs/common';
 import { Response } from 'express';
 import { UserService } from './user.service';
+import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 
 class RegisterUserDto {
+  @IsNotEmpty()
   name: string;
+
+  @IsEmail()
   email: string;
+
+  @MinLength(6)
   password: string;
 }
 
 class LoginUserDto {
+  @IsEmail()
   email: string;
+
+  @MinLength(6)
   password: string;
 }
 
@@ -18,6 +27,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('/register')
+  @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
   async register(@Body() dto: RegisterUserDto, @Res() res: Response) {
     const user = await this.userService.register(dto);
     const { password, ...userData } = user;
@@ -28,6 +38,7 @@ export class UserController {
   }
 
   @Post('/login')
+  @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
   async login(@Body() dto: LoginUserDto, @Res() res: Response) {
     try {
       const result = await this.userService.login(dto);
@@ -46,5 +57,20 @@ export class UserController {
     } catch (err) {
       res.status(HttpStatus.UNAUTHORIZED).json({ message: err.message });
     }
+  }
+
+  @Post('/logout')
+  async logout(@Res() res: Response) {
+    res.clearCookie('jwt', {
+      httpOnly: true,
+      sameSite: 'strict'
+    });
+    res.clearCookie('user', {
+      httpOnly: true,
+      sameSite: 'strict'
+    });
+    res.status(HttpStatus.OK).json({
+      message: 'Logout successful'
+    });
   }
 }

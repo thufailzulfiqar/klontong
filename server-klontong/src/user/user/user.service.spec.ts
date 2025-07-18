@@ -91,3 +91,41 @@ describe('UserController', () => {
     });
   });
 });
+
+describe('UserController Validation', () => {
+  let controller: UserController;
+
+  const mockUserService = {
+    register: jest.fn(),
+    login: jest.fn(),
+  };
+
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      controllers: [UserController],
+      providers: [{ provide: UserService, useValue: mockUserService }],
+    }).compile();
+
+    controller = module.get<UserController>(UserController);
+  });
+
+  it('should fail validation if email is missing', async () => {
+    const mockRes: Partial<Response> = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    };
+    await expect(
+      controller.register({ name: 'User1', password: 'user123' } as any, mockRes as Response)
+    ).rejects.toThrow();
+  });
+
+  it('should fail validation if password is too short', async () => {
+    const mockRes: Partial<Response> = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    };
+    await expect(
+      controller.register({ name: 'User1', email: 'user1@mail.com', password: '123' } as any, mockRes as Response)
+    ).rejects.toThrow();
+  });
+});

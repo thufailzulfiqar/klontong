@@ -2,6 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ProductController } from './product.controller';
 import { ProductService } from './product.service';
 import { Response } from 'express';
+import { validate } from 'class-validator';
+import { plainToInstance } from 'class-transformer';
+import { CreateProductDto } from './product.controller';
 
 describe('ProductController', () => {
   let controller: ProductController;
@@ -63,5 +66,61 @@ describe('ProductController', () => {
       message: 'Product created successfully',
       product: { id: 3, name: 'Produk3' },
     });
+  });
+
+  it('should fail validation if required field is missing', async () => {
+    const dto = {
+      CategoryId: 1,
+      categoryName: 'Minuman',
+      sku: 'DRK999',
+      description: 'Minuman teh manis dingin.',
+      weight: 400,
+      width: 6,
+      length: 6,
+      height: 20,
+      image: 'https://example.com/image.jpg',
+      price: 6000,
+    };
+    const instance = plainToInstance(CreateProductDto, dto);
+    const errors = await validate(instance);
+    expect(errors.length).toBeGreaterThan(0);
+  });
+
+  it('should fail validation if price is not a number', async () => {
+    const dto = {
+      CategoryId: 1,
+      categoryName: 'Minuman',
+      sku: 'DRK999',
+      name: 'Es Teh Manis',
+      description: 'Minuman teh manis dingin.',
+      weight: 400,
+      width: 6,
+      length: 6,
+      height: 20,
+      image: 'https://example.com/image.jpg',
+      price: 'enam ribu',
+    };
+    const instance = plainToInstance(CreateProductDto, dto);
+    const errors = await validate(instance);
+    expect(errors.length).toBeGreaterThan(0);
+  });
+
+  it('should fail validation if image is not a valid url', async () => {
+    const dto = {
+      CategoryId: 1,
+      categoryName: 'Minuman',
+      sku: 'DRK999',
+      name: 'Es Teh Manis',
+      description: 'Minuman teh manis dingin.',
+      weight: 400,
+      width: 6,
+      length: 6,
+      height: 20,
+      image: 'not_a_url',
+      price: 6000,
+    };
+    const instance = plainToInstance(CreateProductDto, dto);
+    const errors = await validate(instance);
+    expect(errors.length).toBeGreaterThan(0);
   });
 });

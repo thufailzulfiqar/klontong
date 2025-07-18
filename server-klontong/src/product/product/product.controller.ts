@@ -1,18 +1,50 @@
-import { Controller, Get, Param, Post, Body, Res, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Res, HttpStatus, UsePipes, ValidationPipe } from '@nestjs/common';
 import { Response } from 'express';
 import { ProductService } from './product.service';
+import { IsInt, IsNotEmpty, IsString, IsNumber, Min, MinLength, IsUrl } from 'class-validator';
 
-class CreateProductDto {
+export class CreateProductDto {
+  @IsInt()
   CategoryId: number;
+
+  @IsString()
+  @IsNotEmpty()
   categoryName: string;
+
+  @IsString()
+  @MinLength(3)
   sku: string;
+
+  @IsString()
+  @IsNotEmpty()
   name: string;
+
+  @IsString()
+  @IsNotEmpty()
   description: string;
+
+  @IsInt()
+  @Min(1)
   weight: number;
+
+  @IsInt()
+  @Min(1)
   width: number;
+
+  @IsInt()
+  @Min(1)
   length: number;
+
+  @IsInt()
+  @Min(1)
   height: number;
+
+  @IsString()
+  @IsUrl()
   image: string;
+
+  @IsNumber()
+  @Min(1)
   price: number;
 }
 
@@ -26,6 +58,7 @@ export class ProductController {
   }
 
   @Post('/add')
+  @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
   async create(@Body() dto: CreateProductDto, @Res() res: Response) {
     const product = await this.productService.create(dto);
     res.status(HttpStatus.CREATED).json({
