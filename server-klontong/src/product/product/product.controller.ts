@@ -35,7 +35,13 @@ export class ProductController {
   }
 
   @Get('/:id')
-  async getById(@Param('id') id: string) {
-    return this.productService.getById(Number(id));
+  async getById(@Param('id') id: string, @Res() res: Response) {
+    const product = await this.productService.getById(Number(id));
+    if (!product) {
+      return res.status(HttpStatus.NOT_FOUND).json({
+        message: `Product with id ${id} not found`,
+      });
+    }
+    return res.status(HttpStatus.OK).json(product);
   }
 }
