@@ -1,0 +1,17 @@
+[
+  { "id": 1, "name": "Minuman" },
+  { "id": 2, "name": "Makanan" },
+  { "id": 3, "name": "Snacks" },
+  { "id": 4, "name": "Bumbu Dapur" },
+  { "id": 5, "name": "Perlengkapan Mandi" },
+  { "id": 6, "name": "Alat Tulis" },
+  { "id": 7, "name": "Sembako" },
+  { "id": 8, "name": "Kesehatan" },
+  { "id": 9, "name": "Kecantikan" },
+  { "id": 10, "name": "Peralatan Rumah Tangga" },
+  { "id": 11, "name": "Elektronik" },
+  { "id": 12, "name": "Perlengkapan Bayi" },
+  { "id": 13, "name": "Makanan Beku" },
+  { "id": 14, "name": "Kebutuhan Harian" },
+  { "id": 15, "name": "Pakaian Dalam" }
+]
