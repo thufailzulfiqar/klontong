@@ -21,4 +21,22 @@ export class ProductService {
       data,
     });
   }
+
+  async getPaginated(page: number, limit: number) {
+    const skip = (page - 1) * limit;
+    const [products, total] = await Promise.all([
+      this.prisma.product.findMany({
+        skip,
+        take: limit,
+        orderBy: { id: 'asc' },
+      }),
+      this.prisma.product.count(),
+    ]);
+    return {
+      data: products,
+      total,
+      page,
+      lastPage: Math.ceil(total / limit),
+    };
+  }
 }

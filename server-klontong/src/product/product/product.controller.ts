@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Body, Res, HttpStatus, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Res, HttpStatus, UsePipes, ValidationPipe, Query } from '@nestjs/common';
 import { Response } from 'express';
 import { ProductService } from './product.service';
 import { IsInt, IsNotEmpty, IsString, IsNumber, Min, MinLength, IsUrl } from 'class-validator';
@@ -67,6 +67,17 @@ export class ProductController {
     });
   }
 
+  @Get('/page')
+  async getPaginated(
+    @Query('page') page: string = '1',
+    @Res() res: Response
+  ) {
+    const pageNum = Number(page) > 0 ? Number(page) : 1;
+    const limit = 10;
+    const result = await this.productService.getPaginated(pageNum, limit);
+    res.status(HttpStatus.OK).json(result);
+  }
+  
   @Get('/:id')
   async getById(@Param('id') id: string, @Res() res: Response) {
     const product = await this.productService.getById(Number(id));
@@ -77,4 +88,5 @@ export class ProductController {
     }
     return res.status(HttpStatus.OK).json(product);
   }
+
 }
