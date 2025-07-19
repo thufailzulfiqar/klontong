@@ -41,12 +41,11 @@
 
 .navbar-inner {
   width: 100%;
-  max-width: 1200px;
+  max-width: 600px;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 1.25rem;
   gap: 1rem;
   box-sizing: border-box;
 }
@@ -92,7 +91,7 @@
   border-radius: 6px;
   border: 1px solid #cdd3d9;
   font-size: 0.95rem;
-  width: 220px;
+  width: 160px;
   max-width: 40vw;
   background: #ffffff;
   color: #111;

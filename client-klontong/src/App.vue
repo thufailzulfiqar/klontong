@@ -1,9 +1,11 @@
 <script setup>
 import Navbar from "./components/Navbar.vue";
+import CategoryList from "./components/CategoryList.vue";
 </script>
 
 <template>
   <Navbar />
+  <CategoryList />
 </template>
 
 <style>
