@@ -2,6 +2,7 @@
   <div class="category-list-container">
     <div class="header">
       <h2>Kategori Belanja</h2>
+      <div class="header-line"></div>
     </div>
     <div class="category-list">
       <CategoryCard
@@ -41,15 +42,24 @@ onMounted(async () => {
 
 .header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   margin: 0 4px 12px;
 }
 
 .header h2 {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   color: #222;
   margin: 0;
+  padding-right: 12px;
+  z-index: 1;
+}
+
+.header-line {
+  flex: 1;
+  height: 2px;
+  background: #d9dde2;
+  margin-left: 12px;
+  border-radius: 1px;
 }
 
 .category-list {
@@ -88,7 +98,9 @@ onMounted(async () => {
   .header {
     margin: 0 12px 10px;
   }
-
+  .header-line {
+    margin-left: 8px;
+  }
   .category-list {
     gap: 10px;
     padding-left: 12px;

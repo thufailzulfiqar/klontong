@@ -8,7 +8,34 @@
         </div>
       </a>
       <div class="right-side">
-        <input class="search-bar" type="text" placeholder="Cari jajanan..." />
+        <div class="search-wrapper">
+          <input
+            class="search-bar"
+            type="text"
+            placeholder="Cari jajanan..."
+            v-model="searchQuery"
+            @input="handleSearch"
+            @focus="handleSearch"
+            @blur="hideResults"
+            autocomplete="off"
+          />
+          <div v-if="showResults" class="search-results">
+            <div v-if="searchResults.length === 0" class="search-empty">
+              Tidak ada produk ditemukan.
+            </div>
+            <div
+              v-for="product in searchResults"
+              :key="product.id"
+              class="search-item"
+            >
+              <img :src="product.image" alt="" class="search-img" />
+              <span class="search-name">{{ product.name }}</span>
+              <span class="search-price"
+                >Rp{{ product.price.toLocaleString() }}</span
+              >
+            </div>
+          </div>
+        </div>
         <button class="login-btn">Login</button>
       </div>
     </div>
@@ -16,7 +43,42 @@
 </template>
 
 <script setup>
-// no script
+import { ref } from "vue";
+const searchQuery = ref("");
+const searchResults = ref([]);
+const showResults = ref(false);
+
+async function handleSearch() {
+  if (!searchQuery.value.trim()) {
+    searchResults.value = [];
+    showResults.value = false;
+    return;
+  }
+  try {
+    const res = await fetch(
+      `http://localhost:3000/api/products/search?q=${encodeURIComponent(
+        searchQuery.value
+      )}`
+    );
+    if (res.ok) {
+      const data = await res.json();
+      searchResults.value = Array.isArray(data) ? data : [];
+      showResults.value = true;
+    } else {
+      searchResults.value = [];
+      showResults.value = true;
+    }
+  } catch {
+    searchResults.value = [];
+    showResults.value = true;
+  }
+}
+
+function hideResults() {
+  setTimeout(() => {
+    showResults.value = false;
+  }, 200);
+}
 </script>
 
 <style scoped>
@@ -82,6 +144,12 @@
   gap: 0.75rem;
 }
 
+.search-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
 .search-bar {
   padding: 0.4rem 0.75rem;
   border-radius: 6px;
@@ -98,6 +166,59 @@
   outline: none;
   border-color: #2563eb;
   box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+
+.search-results {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  width: 260px;
+  max-width: 90vw;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.08);
+  z-index: 999;
+  padding: 8px 0;
+}
+
+.search-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.search-item:hover {
+  background: #f5f6fa;
+}
+
+.search-img {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.search-name {
+  flex: 1;
+  font-size: 0.98rem;
+  color: #232946;
+}
+
+.search-price {
+  font-size: 0.95rem;
+  color: #2563eb;
+  font-weight: 500;
+}
+
+.search-empty {
+  padding: 10px 16px;
+  color: #888;
+  font-size: 0.95rem;
+  text-align: center;
 }
 
 .login-btn {

@@ -18,6 +18,7 @@ onMounted(async () => {
   <div class="product-list-container">
     <div class="header">
       <h2>Daftar Produk</h2>
+      <div class="header-line"></div>
     </div>
     <div class="product-list">
       <div v-for="product in products" :key="product.id" class="product-card">
@@ -45,12 +46,27 @@ onMounted(async () => {
 
 .header {
   margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
 }
 
 .header h2 {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   color: #222;
   margin: 0;
+  z-index: 1;
+  /* background: #fff; */
+  padding-right: 12px;
+}
+
+.header-line {
+  flex: 1;
+  height: 2px;
+  background: #d9dde2;
+  margin-left: 12px;
+  border-radius: 1px;
 }
 
 .product-list {
