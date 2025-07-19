@@ -1,11 +1,13 @@
 <script setup>
 import Navbar from "./components/Navbar.vue";
 import CategoryList from "./components/CategoryList.vue";
+import ProductList from "./components/ProductList.vue";
 </script>
 
 <template>
   <Navbar />
   <CategoryList />
+  <ProductList />
 </template>
 
 <style>

@@ -8,11 +8,7 @@
         </div>
       </a>
       <div class="right-side">
-        <input
-          class="search-bar"
-          type="text"
-          placeholder="Search products..."
-        />
+        <input class="search-bar" type="text" placeholder="Cari jajanan..." />
         <button class="login-btn">Login</button>
       </div>
     </div>
@@ -41,7 +37,7 @@
 
 .navbar-inner {
   width: 100%;
-  max-width: 600px;
+  max-width: 480px;
   height: 100%;
   display: flex;
   align-items: center;

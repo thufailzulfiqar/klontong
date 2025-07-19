@@ -16,7 +16,7 @@ defineProps({
 <style scoped>
 .category-card {
   flex-shrink: 0;
-  width: 100px;
+  width: 92px;
   min-height: 100px;
   border: 1px solid #eee;
   border-radius: 10px;
@@ -30,15 +30,9 @@ defineProps({
   scroll-snap-align: start;
 }
 
-.category-image {
-  width: 50px;
-  height: 50px;
-  object-fit: contain;
-}
-
 .category-name {
-  font-size: 0.85rem;
-  margin-top: 6px;
+  font-size: 0.9rem;
+  margin-top: 10px;
   text-align: center;
   color: #333;
 }
@@ -46,18 +40,16 @@ defineProps({
 /* Responsif di HP */
 @media (max-width: 600px) {
   .category-card {
-    width: 80px;
-    min-height: 90px;
-    padding: 6px;
-  }
-
-  .category-image {
-    width: 40px;
-    height: 40px;
+    width: 92px;
+    min-height: 100px;
+    padding: 8px;
   }
 
   .category-name {
-    font-size: 0.75rem;
+    font-size: 0.9rem;
+    margin-top: 10px;
+    text-align: center;
+    color: #333;
   }
 }
 </style>

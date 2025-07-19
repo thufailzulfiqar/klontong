@@ -2,7 +2,6 @@
   <div class="category-list-container">
     <div class="header">
       <h2>Kategori Belanja</h2>
-      <a href="#" class="see-all">Lihat Semua</a>
     </div>
     <div class="category-list">
       <CategoryCard
@@ -33,10 +32,10 @@ onMounted(async () => {
 
 <style scoped>
 .category-list-container {
-  margin: 80px 16px 0px;
+  margin-top: 56px;
   padding: 0;
   width: 100%;
-  max-width: 600px;
+  max-width: 480px;
   overflow: hidden;
 }
 
@@ -44,7 +43,7 @@ onMounted(async () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0 16px 12px;
+  margin: 0 4px 12px;
 }
 
 .header h2 {
@@ -53,18 +52,11 @@ onMounted(async () => {
   margin: 0;
 }
 
-.see-all {
-  color: #0066ff;
-  font-size: 0.9rem;
-  text-decoration: none;
-}
-
 .category-list {
   display: flex;
   overflow-x: auto;
   gap: 12px;
   padding: 0 0px 12px 0px;
-  margin-left: 16px;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   width: 100%;
@@ -82,6 +74,14 @@ onMounted(async () => {
 
 .category-list::-webkit-scrollbar-track {
   background: transparent;
+}
+
+.category-card {
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.category-card:hover {
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+  border-color: #2563eb;
 }
 
 @media (max-width: 600px) {
