@@ -242,8 +242,8 @@ function goBack() {
     padding: 16px 4px;
   }
   .product-detail-image {
-    height: 120px;
-    max-width: 100vw;
+    height: 180px;
+    max-width: 60vw;
   }
   .label {
     width: 90px;

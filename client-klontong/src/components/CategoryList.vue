@@ -16,7 +16,13 @@
     <div v-if="products.length" class="category-products">
       <div class="category-products-title">Produk pada kategori ini:</div>
       <div class="product-list">
-        <div v-for="product in products" :key="product.id" class="product-card">
+        <div
+          v-for="product in products"
+          :key="product.id"
+          class="product-card"
+          @click="$router.push(`/product/${product.id}`)"
+          style="cursor: pointer"
+        >
           <img :src="product.image" :alt="product.name" class="product-image" />
           <div class="product-info">
             <div class="product-name">{{ product.name }}</div>
@@ -196,11 +202,15 @@ async function handleCategoryClick(category) {
     gap: 10px;
     padding-left: 12px;
   }
+  .product-list-container {
+    max-width: 100vw;
+    padding: 0 8px;
+  }
   .product-list {
-    gap: 10px;
+    gap: 16px;
   }
   .product-image {
-    height: 80px;
+    height: 100px;
   }
 }
 </style>
