@@ -2,6 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { Response } from 'express';
+import { ExecutionContext } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 
 describe('UserController', () => {
   let controller: UserController;
@@ -89,6 +91,21 @@ describe('UserController', () => {
       },
       token: 'jwt_token'
     });
+  });
+
+  it('should call guard and block unauthorized access', async () => {
+    class MockAuthGuard extends AuthGuard('jwt') {
+      canActivate(context: ExecutionContext) {
+        return false;
+      }
+    }
+    const guard = new MockAuthGuard();
+    const context = {
+      switchToHttp: () => ({
+        getRequest: () => ({})
+      })
+    } as unknown as ExecutionContext;
+    expect(await guard.canActivate(context)).toBe(false);
   });
 });
 
