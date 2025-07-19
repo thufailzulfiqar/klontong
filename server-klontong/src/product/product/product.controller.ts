@@ -1,7 +1,8 @@
-import { Controller, Get, Param, Post, Body, Res, HttpStatus, UsePipes, ValidationPipe, Query } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Res, HttpStatus, UsePipes, ValidationPipe, Query, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { ProductService } from './product.service';
 import { IsInt, IsNotEmpty, IsString, IsNumber, Min, MinLength, IsUrl } from 'class-validator';
+import { AuthGuard } from '@nestjs/passport';
 
 export class CreateProductDto {
   @IsInt()
@@ -58,6 +59,7 @@ export class ProductController {
   }
 
   @Post('/add')
+  @UseGuards(AuthGuard('jwt'))
   @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
   async create(@Body() dto: CreateProductDto, @Res() res: Response) {
     const product = await this.productService.create(dto);
