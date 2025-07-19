@@ -21,7 +21,13 @@ onMounted(async () => {
       <div class="header-line"></div>
     </div>
     <div class="product-list">
-      <div v-for="product in products" :key="product.id" class="product-card">
+      <div
+        v-for="product in products"
+        :key="product.id"
+        class="product-card"
+        @click="$router.push(`/product/${product.id}`)"
+        style="cursor: pointer"
+      >
         <img :src="product.image" :alt="product.name" class="product-image" />
         <div class="product-info">
           <div class="product-name">{{ product.name }}</div>

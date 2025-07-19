@@ -27,6 +27,8 @@
               v-for="product in searchResults"
               :key="product.id"
               class="search-item"
+              @mousedown.prevent="goToProduct(product.id)"
+              style="cursor: pointer"
             >
               <img :src="product.image" alt="" class="search-img" />
               <span class="search-name">{{ product.name }}</span>
@@ -44,9 +46,11 @@
 
 <script setup>
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 const searchQuery = ref("");
 const searchResults = ref([]);
 const showResults = ref(false);
+const router = useRouter();
 
 async function handleSearch() {
   if (!searchQuery.value.trim()) {
@@ -78,6 +82,11 @@ function hideResults() {
   setTimeout(() => {
     showResults.value = false;
   }, 200);
+}
+
+function goToProduct(id) {
+  router.push(`/product/${id}`);
+  showResults.value = false;
 }
 </script>
 
