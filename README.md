@@ -1,4 +1,4 @@
-# klontong
+# Klontong
 
 Sistem manajemen produk dan user berbasis Vue.js (frontend) dan NestJS + Prisma (backend).
 
@@ -175,5 +175,14 @@ npm run test
 ---
 
 **Lihat file [src/router/index.js](client-klontong/src/router/index.js) untuk detail lebih lanjut tentang rute dan halaman di aplikasi.**
+
+## Tech Stack
+
+- **Frontend:** Vue 3, Vite, Vue Router, Composition API
+- **Backend:** NestJS, Prisma ORM, PostgreSQL, JWT Auth, bcrypt
+- **Testing:** Jest (unit & e2e), ts-node (seed)
+- **Style:** CSS, scoped style di komponen
+
+---
 
 **Selamat mencoba!**
