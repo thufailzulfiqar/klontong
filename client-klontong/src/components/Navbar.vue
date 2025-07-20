@@ -38,19 +38,40 @@
             </div>
           </div>
         </div>
-        <button class="login-btn">Login</button>
+        <button class="login-btn" v-if="!isLoggedIn" @click="goToLogin">
+          Login
+        </button>
+        <button class="login-btn logout" v-else @click="handleLogout">
+          Logout
+        </button>
       </div>
     </div>
   </nav>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 const searchQuery = ref("");
 const searchResults = ref([]);
 const showResults = ref(false);
 const router = useRouter();
+const isLoggedIn = ref(false);
+
+async function checkLogin() {
+  try {
+    const res = await fetch("http://localhost:3000/api/users/me", {
+      credentials: "include",
+    });
+    isLoggedIn.value = res.ok;
+  } catch {
+    isLoggedIn.value = false;
+  }
+}
+
+onMounted(() => {
+  checkLogin();
+});
 
 async function handleSearch() {
   if (!searchQuery.value.trim()) {
@@ -88,6 +109,29 @@ function goToProduct(id) {
   router.push(`/product/${id}`);
   showResults.value = false;
 }
+
+function goToLogin() {
+  router.push("/login");
+}
+
+async function handleLogout() {
+  await fetch("http://localhost:3000/api/users/logout", {
+    method: "POST",
+    credentials: "include",
+  });
+  checkLogin();
+  router.push("/");
+}
+
+import { watch } from "vue";
+import { useRoute } from "vue-router";
+const route = useRoute();
+watch(
+  () => route.fullPath,
+  () => {
+    checkLogin();
+  }
+);
 </script>
 
 <style scoped>
@@ -245,6 +289,14 @@ function goToProduct(id) {
 
 .login-btn:hover {
   background: #1d4fbf;
+}
+
+.login-btn.logout {
+  background: #ff3f3f;
+  color: #fff;
+}
+.login-btn.logout:hover {
+  background: #d32f2f;
 }
 
 @media (max-width: 600px) {

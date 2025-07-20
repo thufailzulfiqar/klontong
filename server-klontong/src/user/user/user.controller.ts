@@ -1,7 +1,14 @@
-import { Controller, Post, Body, Res, HttpStatus, UsePipes, ValidationPipe } from '@nestjs/common';
-import { Response } from 'express';
+import { Controller, Post, Body, Res, HttpStatus, UsePipes, ValidationPipe, Get, Req, UseGuards } from '@nestjs/common';
+import { Response, Request } from 'express';
 import { UserService } from './user.service';
 import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
+import { AuthGuard } from '@nestjs/passport';
+
+declare module 'express-serve-static-core' {
+  interface Request {
+    user?: any;
+  }
+}
 
 class RegisterUserDto {
   @IsNotEmpty()
@@ -72,5 +79,11 @@ export class UserController {
     res.status(HttpStatus.OK).json({
       message: 'Logout successful'
     });
+  }
+
+  @Get('/me')
+  @UseGuards(AuthGuard('jwt'))
+  async getProfile(@Req() req: Request) {
+    return { user: req.user };
   }
 }
