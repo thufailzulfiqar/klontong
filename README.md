@@ -1,5 +1,7 @@
 # klontong
 
+Sistem manajemen produk dan user berbasis Vue.js (frontend) dan NestJS + Prisma (backend).
+
 ## Cara Menjalankan Project Setelah Clone Repo
 
 ### 1. Clone Repo
@@ -32,6 +34,7 @@ npm install
 #### Migrasi & seeding database:
 
 ```sh
+npx prisma migrate reset
 npx prisma migrate deploy
 npm run seed
 ```
@@ -74,12 +77,21 @@ Client berjalan di `http://localhost:5173`
 
 Setelah seeding, terdapat user default:
 
-- Email: `user1@mail.com`
-- Password: `user123`
+Untuk role admin (Dapat melakukan add product, dan manage user (edit role))
+
+- Email: `admin1@mail.com`
+- Password: `admin123`
+
+Untuk role staff (Dapat melakukan add product)
+
+- Email: `staff1@mail.com`
+- Password: `staff123`
+
+Ketika register akan default dengan role "customer", dapat dirubah oleh admin.
 
 ---
 
-### 5. Testing
+### 6. Testing
 
 Untuk menjalankan test backend:
 
@@ -94,6 +106,11 @@ npm run test
 
 - Pastikan database sudah berjalan dan koneksi di `.env` benar.
 - Jika ada error seeding, cek file `prisma/data/` dan koneksi database.
+- Jika ingin reset data, gunakan:
+  ```sh
+  npx prisma migrate reset
+  npm run seed
+  ```
 
 ---
 
