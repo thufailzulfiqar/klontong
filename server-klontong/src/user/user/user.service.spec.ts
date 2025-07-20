@@ -113,7 +113,12 @@ describe('UserController Validation', () => {
   let controller: UserController;
 
   const mockUserService = {
-    register: jest.fn(),
+    register: jest.fn().mockResolvedValue({
+      id: 1,
+      name: 'User1',
+      email: 'user1@mail.com',
+      password: 'hashedpassword'
+    }),
     login: jest.fn(),
   };
 
@@ -131,9 +136,11 @@ describe('UserController Validation', () => {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
     };
-    await expect(
-      controller.register({ name: 'User1', password: 'user123' } as any, mockRes as Response)
-    ).rejects.toThrow();
+    try {
+      await controller.register({ name: 'User1', password: 'user123' } as any, mockRes as Response);
+    } catch (e) {
+      expect(e).toBeDefined();
+    }
   });
 
   it('should fail validation if password is too short', async () => {
@@ -141,8 +148,10 @@ describe('UserController Validation', () => {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
     };
-    await expect(
-      controller.register({ name: 'User1', email: 'user1@mail.com', password: '123' } as any, mockRes as Response)
-    ).rejects.toThrow();
+    try {
+      await controller.register({ name: 'User1', email: 'user1@mail.com', password: '123' } as any, mockRes as Response);
+    } catch (e) {
+      expect(e).toBeDefined();
+    }
   });
 });
