@@ -35,7 +35,7 @@ npm install
 
 ```env
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/dbklontong"
-JWT_SECRET
+JWT_SECRET=your_jwt_secret
 ```
 
 #### Migrasi & seeding database:
