@@ -7,6 +7,7 @@ interface RegisterUserDto {
   name: string;
   email: string;
   password: string;
+  role?: string;
 }
 
 interface LoginUserDto {
@@ -28,6 +29,7 @@ export class UserService {
         name: dto.name,
         email: dto.email,
         password: hashedPassword,
+        role: dto.role || "customer", 
       },
     });
   }
@@ -44,7 +46,8 @@ export class UserService {
     const token = this.jwtService.sign({
       sub: user.id,
       email: user.email,
-      name: user.name
+      name: user.name,
+      role: user.role
     });
 
     return { user: userData, token };

@@ -27,6 +27,7 @@ async function main() {
         name: user.name,
         email: user.email,
         password: hashedPassword,
+        role: user.role || "customer",
       },
     });
   }

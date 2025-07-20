@@ -120,7 +120,7 @@ async function handleLogout() {
     credentials: "include",
   });
   checkLogin();
-  router.push("/");
+  window.location.reload();
 }
 
 import { watch } from "vue";

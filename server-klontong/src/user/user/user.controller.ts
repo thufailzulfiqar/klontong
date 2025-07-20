@@ -1,7 +1,7 @@
 import { Controller, Post, Body, Res, HttpStatus, UsePipes, ValidationPipe, Get, Req, UseGuards } from '@nestjs/common';
 import { Response, Request } from 'express';
 import { UserService } from './user.service';
-import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, MinLength, IsOptional, IsString } from 'class-validator';
 import { AuthGuard } from '@nestjs/passport';
 
 declare module 'express-serve-static-core' {
@@ -19,6 +19,10 @@ class RegisterUserDto {
 
   @MinLength(6)
   password: string;
+
+  @IsOptional()
+  @IsString()
+  role?: string;
 }
 
 class LoginUserDto {

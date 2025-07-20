@@ -8,8 +8,25 @@ const loading = ref(false);
 const error = ref("");
 const router = useRouter();
 
+function validateForm() {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!email.value || !emailRegex.test(email.value)) {
+    error.value = "Email tidak valid";
+    return false;
+  }
+  if (!password.value || password.value.length < 6) {
+    error.value = "Password minimal 6 karakter";
+    return false;
+  }
+  return true;
+}
+
 async function handleLogin() {
   error.value = "";
+  if (!validateForm()) {
+    alert(error.value);
+    return;
+  }
   loading.value = true;
   try {
     const res = await fetch("http://localhost:3000/api/users/login", {
@@ -23,9 +40,11 @@ async function handleLogin() {
       router.push("/");
     } else {
       error.value = data.message || "Login gagal";
+      alert(error.value);
     }
   } catch (err) {
     error.value = "Gagal terhubung ke server";
+    alert(error.value);
   }
   loading.value = false;
 }
