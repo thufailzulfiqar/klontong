@@ -1,7 +1,9 @@
 <script setup>
+// filepath: client-klontong/src/components/RegisterPage.vue
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
+const name = ref("");
 const email = ref("");
 const password = ref("");
 const loading = ref(false);
@@ -10,6 +12,10 @@ const router = useRouter();
 
 function validateForm() {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!name.value || name.value.length < 3) {
+    error.value = "Nama minimal 3 karakter";
+    return false;
+  }
   if (!email.value || !emailRegex.test(email.value)) {
     error.value = "Email tidak valid";
     return false;
@@ -21,7 +27,7 @@ function validateForm() {
   return true;
 }
 
-async function handleLogin() {
+async function handleRegister() {
   error.value = "";
   if (!validateForm()) {
     alert(error.value);
@@ -29,17 +35,21 @@ async function handleLogin() {
   }
   loading.value = true;
   try {
-    const res = await fetch("http://localhost:3000/api/users/login", {
+    const res = await fetch("http://localhost:3000/api/users/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: email.value, password: password.value }),
-      credentials: "include",
+      body: JSON.stringify({
+        name: name.value,
+        email: email.value,
+        password: password.value,
+      }),
     });
     const data = await res.json();
     if (res.ok) {
-      router.push("/");
+      alert("Registrasi berhasil! Silakan login.");
+      router.push("/login");
     } else {
-      error.value = data.message || "Login gagal";
+      error.value = data.message || "Registrasi gagal";
       alert(error.value);
     }
   } catch (err) {
@@ -51,9 +61,16 @@ async function handleLogin() {
 </script>
 
 <template>
-  <div class="login-container">
-    <h2>Login</h2>
-    <form @submit.prevent="handleLogin" class="login-form">
+  <div class="register-container">
+    <h2>Register</h2>
+    <form @submit.prevent="handleRegister" class="register-form">
+      <input
+        type="text"
+        v-model="name"
+        placeholder="Nama"
+        required
+        autocomplete="name"
+      />
       <input
         type="email"
         v-model="email"
@@ -66,24 +83,22 @@ async function handleLogin() {
         v-model="password"
         placeholder="Password"
         required
-        autocomplete="current-password"
+        autocomplete="new-password"
       />
       <button type="submit" :disabled="loading">
-        {{ loading ? "Loading..." : "Login" }}
+        {{ loading ? "Loading..." : "Sign Up" }}
       </button>
-      <div v-if="error" class="login-error">{{ error }}</div>
+      <div v-if="error" class="register-error">{{ error }}</div>
     </form>
-    <div class="register-question">
-      Don't have an account?
-      <button class="register-btn" @click="router.push('/register')">
-        Sign Up
-      </button>
+    <div class="login-question">
+      Already have an account?
+      <button class="login-btn" @click="router.push('/login')">Login</button>
     </div>
   </div>
 </template>
 
 <style scoped>
-.login-container {
+.register-container {
   max-width: 340px;
   margin: 80px auto 0;
   padding: 32px 24px;
@@ -95,13 +110,14 @@ async function handleLogin() {
   align-items: center;
 }
 
-.login-form {
+.register-form {
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
+input[type="text"],
 input[type="email"],
 input[type="password"] {
   padding: 10px 12px;
@@ -136,18 +152,25 @@ button[type="submit"]:disabled {
   cursor: not-allowed;
 }
 
-.login-error {
+.register-error {
   color: #ff3f3f;
   font-size: 0.98rem;
   margin-top: 8px;
   text-align: center;
 }
 
-.register-btn {
-  margin-top: 16px;
+.login-question {
+  margin-top: 18px;
+  font-size: 1rem;
+  color: #232946;
+  text-align: center;
+}
+
+.login-btn {
+  margin-left: 6px;
   background: transparent;
   color: #2563eb;
-  padding: 10px 0;
+  padding: 0;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
@@ -157,7 +180,7 @@ button[type="submit"]:disabled {
   transition: color 0.2s;
 }
 
-.register-btn:hover {
+.login-btn:hover {
   color: #3f72ff;
   border: none;
   box-shadow: none;

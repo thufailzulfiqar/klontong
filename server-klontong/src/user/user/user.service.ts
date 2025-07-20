@@ -52,4 +52,21 @@ export class UserService {
 
     return { user: userData, token };
   }
+
+  async editUser(id: number, dto: any) {
+    if (dto.password) {
+      const hashedPassword = await bcrypt.hash(dto.password, 10);
+      dto.password = hashedPassword;
+    }
+    return this.prisma.user.update({
+      where: { id },
+      data: dto,
+    });
+  }
+
+  async getAll() {
+    const users = await this.prisma.user.findMany();
+    // Hilangkan password dari hasil
+    return users.map(({ password, ...user }) => user);
+  }
 }

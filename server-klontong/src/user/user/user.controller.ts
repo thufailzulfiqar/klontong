@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Res, HttpStatus, UsePipes, ValidationPipe, Get, Req, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, Res, HttpStatus, UsePipes, ValidationPipe, Get, Req, UseGuards, Put, Param } from '@nestjs/common';
 import { Response, Request } from 'express';
 import { UserService } from './user.service';
 import { IsEmail, IsNotEmpty, MinLength, IsOptional, IsString } from 'class-validator';
@@ -31,6 +31,24 @@ class LoginUserDto {
 
   @MinLength(6)
   password: string;
+}
+
+class EditUserDto {
+  @IsOptional()
+  @IsString()
+  name?: string;
+
+  @IsOptional()
+  @IsEmail()
+  email?: string;
+
+  @IsOptional()
+  @MinLength(6)
+  password?: string;
+
+  @IsOptional()
+  @IsString()
+  role?: string;
 }
 
 @Controller('/api/users')
@@ -89,5 +107,34 @@ export class UserController {
   @UseGuards(AuthGuard('jwt'))
   async getProfile(@Req() req: Request) {
     return { user: req.user };
+  }
+
+  @Put('/edit/:id')
+  @UseGuards(AuthGuard('jwt'))
+  @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
+  async editUser(@Param('id') id: string, @Body() dto: EditUserDto, @Req() req: Request, @Res() res: Response) {
+    if (!req.user || req.user.role !== 'admin') {
+      return res.status(HttpStatus.FORBIDDEN).json({ message: 'Forbidden: Only admin can edit user' });
+    }
+    try {
+      const user = await this.userService.editUser(Number(id), dto);
+      const { password, ...userData } = user;
+      res.status(HttpStatus.OK).json({
+        message: 'User updated successfully',
+        user: userData
+      });
+    } catch (err) {
+      res.status(HttpStatus.BAD_REQUEST).json({ message: err.message });
+    }
+  }
+
+  @Get()
+  @UseGuards(AuthGuard('jwt'))
+  async getAll(@Req() req: Request, @Res() res: Response) {
+    if (!req.user || req.user.role !== 'admin') {
+      return res.status(HttpStatus.FORBIDDEN).json({ message: 'Forbidden: Only admin can access user list' });
+    }
+    const users = await this.userService.getAll();
+    res.status(HttpStatus.OK).json(users);
   }
 }

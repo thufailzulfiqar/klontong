@@ -7,6 +7,7 @@ import { useRouter } from "vue-router";
 
 const showAddProduct = ref(false);
 const showManageUser = ref(false);
+const userName = ref("");
 const router = useRouter();
 
 onMounted(async () => {
@@ -17,12 +18,14 @@ onMounted(async () => {
     if (res.ok) {
       const data = await res.json();
       const role = data?.user?.role;
+      userName.value = data?.user?.name || "";
       showAddProduct.value = role === "admin" || role === "staff";
       showManageUser.value = role === "admin";
     }
   } catch {
     showAddProduct.value = false;
     showManageUser.value = false;
+    userName.value = "";
   }
 });
 
@@ -37,20 +40,21 @@ function goToManageUser() {
 
 <template>
   <Navbar />
+  <div v-if="userName" class="hello-user">Hello, {{ userName }}!</div>
   <div class="action-btn-group" v-if="showAddProduct || showManageUser">
     <button
       v-if="showAddProduct"
       class="add-product-btn"
       @click="goToAddProduct"
     >
-      + Add Product
+      + Tambah Produk
     </button>
     <button
       v-if="showManageUser"
       class="manage-user-btn"
       @click="goToManageUser"
     >
-      Manage User
+      Kelola User
     </button>
   </div>
   <CategoryList />
@@ -91,11 +95,28 @@ input,
   letter-spacing: 0.02em;
 }
 
+.hello-user {
+  text-align: center;
+  margin-top: 40px;
+  margin-bottom: 24px;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2563eb;
+  letter-spacing: 0.04em;
+  background: linear-gradient(90deg, #b9c5fd 0%, #ffe2e2 100%);
+  border-radius: 12px;
+  padding: 10px 0 10px 0;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.07);
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .action-btn-group {
   display: flex;
   justify-content: center;
   gap: 16px;
-  margin: 48px auto 0 auto;
+  margin: 8px auto 0 auto;
 }
 
 .add-product-btn {

@@ -98,6 +98,10 @@ async function handleSubmit() {
   }
   loading.value = false;
 }
+
+function goBack() {
+  window.location.href = "/";
+}
 </script>
 
 <template>
@@ -144,13 +148,15 @@ async function handleSubmit() {
       <div v-if="error" class="add-product-error">{{ error }}</div>
     </form>
   </div>
+  <button class="back-btn" @click="goBack">← Kembali</button>
 </template>
 
 <style scoped>
 .add-product-container {
-  max-width: 480px;
-  margin: 40px auto 0;
-  padding: 32px 24px;
+  width: 400px;
+  max-width: 640px;
+  margin: 10px auto 0;
+  padding: 40px 32px;
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 2px 12px rgba(37, 99, 235, 0.07);
@@ -161,29 +167,36 @@ async function handleSubmit() {
 
 .add-product-form {
   width: 100%;
-  max-width: 440px;
+  max-width: 600px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
 }
 
 input,
-textarea {
+textarea,
+select {
   padding: 10px 12px;
   border-radius: 6px;
   border: 1px solid #cdd3d9;
   font-size: 1rem;
   background: #f8fafd;
   color: #232946;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-textarea {
-  min-height: 60px;
-  resize: vertical;
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 6l4 4 4-4' stroke='%232569eb' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 18px 18px;
+  cursor: pointer;
 }
 
 input:focus,
-textarea:focus {
+textarea:focus,
+select:focus {
   outline: none;
   border-color: #2563eb;
   box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
@@ -212,5 +225,22 @@ button[type="submit"]:disabled {
   font-size: 0.98rem;
   margin-top: 8px;
   text-align: center;
+}
+
+.back-btn {
+  margin: 24px auto 0 auto;
+  display: block;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 32px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.back-btn:hover {
+  background: #1d4fbf;
 }
 </style>

@@ -74,7 +74,7 @@ async function handleCategoryClick(category) {
 
 <style scoped>
 .category-list-container {
-  margin-top: 56px;
+  margin-top: 42px;
   padding: 0;
   width: 100%;
   max-width: 480px;
