@@ -174,8 +174,8 @@ watch(
 }
 
 .logo-img {
-  height: 34px;
-  width: 34px;
+  height: 45px;
+  width: 45px;
   object-fit: contain;
 }
 
@@ -183,7 +183,7 @@ watch(
   font-weight: 600;
   font-size: 1.4rem;
   color: #ffffff;
-  letter-spacing: 4px;
+  letter-spacing: 3px;
   transition: color 0.2s;
 }
 

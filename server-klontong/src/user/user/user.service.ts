@@ -23,13 +23,17 @@ export class UserService {
   ) {}
 
   async register(dto: RegisterUserDto) {
+    const existing = await this.prisma.user.findUnique({ where: { email: dto.email } });
+    if (existing) {
+      throw new Error("Email sudah terdaftar");
+    }
     const hashedPassword = await bcrypt.hash(dto.password, 10);
     return this.prisma.user.create({
       data: {
         name: dto.name,
         email: dto.email,
         password: hashedPassword,
-        role: dto.role || "customer", 
+        role: dto.role || "customer",
       },
     });
   }

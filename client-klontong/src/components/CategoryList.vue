@@ -143,8 +143,8 @@ async function handleCategoryClick(category) {
   margin-top: 24px;
 }
 .category-products-title {
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: 1.1rem;
+  font-weight: 700;
   color: #2563eb;
   margin-bottom: 10px;
 }

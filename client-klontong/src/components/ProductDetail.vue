@@ -77,7 +77,7 @@ function goBack() {
 
 <style scoped>
 .product-detail-container {
-  max-width: 480px;
+  max-width: 450px;
   margin: 80px auto 0;
   padding: 24px 16px;
   background: #fff;

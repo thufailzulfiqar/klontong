@@ -52,7 +52,10 @@ async function handleLogin() {
 
 <template>
   <div class="login-container">
-    <h2>Login</h2>
+    <button class="logo-home-btn" @click="router.push('/')">
+      <img src="../assets/logo.png" alt="Klontong Logo" class="logo-img" />
+    </button>
+    <h2>Masuk</h2>
     <form @submit.prevent="handleLogin" class="login-form">
       <input
         type="email"
@@ -69,14 +72,14 @@ async function handleLogin() {
         autocomplete="current-password"
       />
       <button type="submit" :disabled="loading">
-        {{ loading ? "Loading..." : "Login" }}
+        {{ loading ? "Loading..." : "Masuk" }}
       </button>
       <div v-if="error" class="login-error">{{ error }}</div>
     </form>
     <div class="register-question">
-      Don't have an account?
+      Belum Punya Akun?
       <button class="register-btn" @click="router.push('/register')">
-        Sign Up
+        Daftar
       </button>
     </div>
   </div>
@@ -84,7 +87,7 @@ async function handleLogin() {
 
 <style scoped>
 .login-container {
-  max-width: 340px;
+  width: 360px;
   margin: 80px auto 0;
   padding: 32px 24px;
   background: #fff;
@@ -162,5 +165,29 @@ button[type="submit"]:disabled {
   border: none;
   box-shadow: none;
   outline: none;
+}
+
+.logo-home-btn {
+  background: none;
+  border: none;
+  outline: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 0px auto;
+  cursor: pointer;
+  transition: filter 0.2s;
+}
+
+.logo-home-btn:hover .logo-img {
+  filter: brightness(0.85) drop-shadow(0 2px 8px #2563eb55);
+}
+
+.logo-img {
+  width: 160px;
+  height: 160px;
+  object-fit: contain;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(37, 99, 235, 0.1);
 }
 </style>

@@ -58,12 +58,16 @@ export class UserController {
   @Post('/register')
   @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
   async register(@Body() dto: RegisterUserDto, @Res() res: Response) {
-    const user = await this.userService.register(dto);
-    const { password, ...userData } = user;
-    res.status(HttpStatus.CREATED).json({
-      message: 'register successful',
-      user: userData
-    });
+    try {
+      const user = await this.userService.register(dto);
+      const { password, ...userData } = user;
+      res.status(201).json({
+        message: 'register successful',
+        user: userData
+      });
+    } catch (err) {
+      res.status(400).json({ message: err.message || 'Registrasi gagal' });
+    }
   }
 
   @Post('/login')

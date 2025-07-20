@@ -15,7 +15,7 @@ router.beforeEach((to, from, next) => {
 router.afterEach(() => {
   setTimeout(() => {
     loading.value = false;
-  }, 200);
+  }, 300);
 });
 </script>
 
@@ -24,6 +24,20 @@ router.afterEach(() => {
     <div class="spinner"></div>
   </div>
   <router-view />
+  <footer class="main-footer">
+    <span class="copyright-logo">©</span>
+    <span class="footer-text">
+      2025 Thufail Zulfiqar Rabbani
+      <br />
+      <a
+        href="https://thufailzulfiqar.vercel.app/"
+        target="_blank"
+        rel="noopener"
+        class="footer-link"
+        >thufailzulfiqar.vercel.app</a
+      >
+    </span>
+  </footer>
 </template>
 
 <style>
@@ -86,5 +100,27 @@ input,
   to {
     transform: rotate(360deg);
   }
+}
+
+.main-footer {
+  width: 100%;
+  text-align: center;
+  padding: 18px 0 18px 0;
+  font-size: 0.85rem;
+  color: #0038b1;
+  background: #e8ecfd;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  margin-top: 48px;
+}
+
+.footer-link {
+  color: #2563eb;
+  text-decoration: underline;
+  font-weight: 700;
+  transition: color 0.2s;
+}
+.footer-link:hover {
+  color: #1d4ed8;
 }
 </style>

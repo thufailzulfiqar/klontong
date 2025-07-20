@@ -33,7 +33,6 @@ function goToPage(p) {
   fetchProducts(p);
 }
 
-// Show max 3 pages, sliding window
 const visiblePages = computed(() => {
   if (lastPage.value <= 3) {
     return Array.from({ length: lastPage.value }, (_, i) => i + 1);

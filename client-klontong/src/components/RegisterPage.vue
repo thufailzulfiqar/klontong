@@ -1,5 +1,4 @@
 <script setup>
-// filepath: client-klontong/src/components/RegisterPage.vue
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
@@ -8,29 +7,34 @@ const email = ref("");
 const password = ref("");
 const loading = ref(false);
 const error = ref("");
+const success = ref("");
 const router = useRouter();
 
 function validateForm() {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!name.value || name.value.length < 3) {
     error.value = "Nama minimal 3 karakter";
+    success.value = "";
     return false;
   }
   if (!email.value || !emailRegex.test(email.value)) {
     error.value = "Email tidak valid";
+    success.value = "";
     return false;
   }
   if (!password.value || password.value.length < 6) {
     error.value = "Password minimal 6 karakter";
+    success.value = "";
     return false;
   }
+  error.value = "";
   return true;
 }
 
 async function handleRegister() {
   error.value = "";
+  success.value = "";
   if (!validateForm()) {
-    alert(error.value);
     return;
   }
   loading.value = true;
@@ -46,15 +50,18 @@ async function handleRegister() {
     });
     const data = await res.json();
     if (res.ok) {
-      alert("Registrasi berhasil! Silakan login.");
-      router.push("/login");
+      success.value = "Registrasi berhasil! Silakan login.";
+      error.value = "";
+      setTimeout(() => {
+        router.push("/login");
+      }, 1500);
     } else {
       error.value = data.message || "Registrasi gagal";
-      alert(error.value);
+      success.value = "";
     }
   } catch (err) {
     error.value = "Gagal terhubung ke server";
-    alert(error.value);
+    success.value = "";
   }
   loading.value = false;
 }
@@ -62,7 +69,10 @@ async function handleRegister() {
 
 <template>
   <div class="register-container">
-    <h2>Register</h2>
+    <button class="logo-home-btn" @click="router.push('/')">
+      <img src="../assets/logo.png" alt="Klontong Logo" class="logo-img" />
+    </button>
+    <h2>Daftar</h2>
     <form @submit.prevent="handleRegister" class="register-form">
       <input
         type="text"
@@ -86,20 +96,21 @@ async function handleRegister() {
         autocomplete="new-password"
       />
       <button type="submit" :disabled="loading">
-        {{ loading ? "Loading..." : "Sign Up" }}
+        {{ loading ? "Loading..." : "Daftar" }}
       </button>
       <div v-if="error" class="register-error">{{ error }}</div>
+      <div v-if="success" class="register-success">{{ success }}</div>
     </form>
     <div class="login-question">
-      Already have an account?
-      <button class="login-btn" @click="router.push('/login')">Login</button>
+      Sudah Punya Akun?
+      <button class="login-btn" @click="router.push('/login')">Masuk</button>
     </div>
   </div>
 </template>
 
 <style scoped>
 .register-container {
-  max-width: 340px;
+  width: 360px;
   margin: 80px auto 0;
   padding: 32px 24px;
   background: #fff;
@@ -159,6 +170,14 @@ button[type="submit"]:disabled {
   text-align: center;
 }
 
+.register-success {
+  color: #6aa300;
+  font-size: 0.98rem;
+  margin-top: 8px;
+  text-align: center;
+  font-weight: 600;
+}
+
 .login-question {
   margin-top: 18px;
   font-size: 1rem;
@@ -185,5 +204,29 @@ button[type="submit"]:disabled {
   border: none;
   box-shadow: none;
   outline: none;
+}
+
+.logo-home-btn {
+  background: none;
+  border: none;
+  outline: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 0px auto;
+  cursor: pointer;
+  transition: filter 0.2s;
+}
+
+.logo-home-btn:hover .logo-img {
+  filter: brightness(0.85) drop-shadow(0 2px 8px #2563eb55);
+}
+
+.logo-img {
+  width: 160px;
+  height: 160px;
+  object-fit: contain;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(37, 99, 235, 0.1);
 }
 </style>

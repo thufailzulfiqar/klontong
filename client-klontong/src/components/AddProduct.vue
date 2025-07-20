@@ -15,6 +15,7 @@ const image = ref("");
 const price = ref("");
 const loading = ref(false);
 const error = ref("");
+const success = ref("");
 const router = useRouter();
 
 onMounted(async () => {
@@ -57,8 +58,8 @@ function validateForm() {
 
 async function handleSubmit() {
   error.value = "";
+  success.value = "";
   if (!validateForm()) {
-    alert(error.value);
     return;
   }
   loading.value = true;
@@ -86,15 +87,18 @@ async function handleSubmit() {
     });
     const data = await res.json();
     if (res.ok) {
-      alert("Produk berhasil ditambahkan!");
-      router.push("/");
+      success.value = "Produk berhasil ditambahkan!";
+      error.value = "";
+      setTimeout(() => {
+        router.push("/");
+      }, 1500);
     } else {
       error.value = data.message || "Gagal menambah produk";
-      alert(error.value);
+      success.value = "";
     }
   } catch (err) {
     error.value = "Gagal terhubung ke server";
-    alert(error.value);
+    success.value = "";
   }
   loading.value = false;
 }
@@ -146,6 +150,7 @@ function goBack() {
         {{ loading ? "Loading..." : "Tambah Produk" }}
       </button>
       <div v-if="error" class="add-product-error">{{ error }}</div>
+      <div v-if="success" class="add-product-success">{{ success }}</div>
     </form>
   </div>
   <button class="back-btn" @click="goBack">← Kembali</button>
@@ -225,6 +230,14 @@ button[type="submit"]:disabled {
   font-size: 0.98rem;
   margin-top: 8px;
   text-align: center;
+}
+
+.add-product-success {
+  color: #48b400;
+  font-size: 0.98rem;
+  margin-top: 8px;
+  text-align: center;
+  font-weight: 500;
 }
 
 .back-btn {
