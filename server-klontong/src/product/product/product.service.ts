@@ -16,6 +16,7 @@ export class ProductService {
   }
 
   async create(dto: any) {
+    // console.info("DTO received:", dto)
     const { id, ...data } = dto;
     return this.prisma.product.create({
       data,
