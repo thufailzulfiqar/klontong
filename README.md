@@ -31,6 +31,13 @@ npm install
 
 - Edit file `.env` dan isi `DATABASE_URL` sesuai koneksi PostgreSQL Anda.
 
+#### Contoh file `.env` untuk backend (server-klontong/.env):
+
+```env
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/dbklontong"
+JWT_SECRET
+```
+
 #### Migrasi & seeding database:
 
 ```sh
