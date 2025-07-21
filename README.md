@@ -7,7 +7,7 @@ Sistem manajemen produk dan user berbasis Vue.js (frontend) dan NestJS + Prisma 
 ### 1. Clone Repo
 
 ```sh
-git clone <url-repo-anda>
+git clone <url-repo>
 cd klontong
 ```
 
